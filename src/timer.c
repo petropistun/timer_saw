@@ -24,31 +24,44 @@ Data Stack size         : 16
 #include <delay.h>
 
 
-//pin0 pin1 - кнопки
-//pin1 - старт
-//pin0 - стоg
-//PORTB.2 - діод
-//PORTB.3 - релюшка, включається -
-//PORTB.4 - релюшка, включається +
-
-
 // Declare your global variables here
-unsigned int time_unit = 0; //один юніт - 50 мс
+eeprom unsigned char interval = 0; //у хвилинах
+unsigned long int time_unit = 0; //один юніт - 50 мс
 
-#define MAX_TIME_IN_UTIN 15*60*20  // 15 min
-#define ONE_MIN_TIME  1200  //одна хв
 
-void Add50utint()  // 1 min
+#define ONE_MIN_TIME  11700  //одна хв
+
+
+#define MAX_TIME 15  // 15 min
+
+void AddMin()  // 1 min
 {
-    if (time_unit < MAX_TIME_IN_UTIN)
+    char i = 0;
+    if (interval < MAX_TIME)
     {            
-        time_unit += ONE_MIN_TIME;
+        interval += 1;
     }
+    else
+    {
+        interval = 0;
+    }          
+    
+    for( i = 0; i < interval; i++)
+    {
+        PORTB.2 = 1;
+        delay_ms(80);
+        if (1 == PINB.4) break;
+        PORTB.2 = 0;
+        delay_ms(120);         
+        if (1 == PINB.4) break;
+    }               
+    
+    PORTB.2 = 0;
 }
 
 void Start()
 {
-    time_unit = ONE_MIN_TIME; //одна хвилина
+    time_unit += interval*ONE_MIN_TIME; //одна хвилина
     PORTB.3 = 0; 
     PORTB.4 = 1;         
     PORTB.2 = 1;
@@ -82,10 +95,18 @@ CLKPR=0x00;
 
 // Input/Output Ports initialization
 // Port B initialization
+// Func5=Out Func4=In Func3=Out Func2=Out Func1=In Func0=In 
+// State5=1 State4=P State3=0 State2=0 State1=P State0= 
+PORTB=0b110010;
+DDRB=0b101100;
+
+
+// Input/Output Ports initialization
+// Port B initialization
 // Func5=Out Func4=Out Func3=Out Func2=Out Func1=In Func0=In 
-// State5=1 State4=1 State3=0 State2=0 State1=P State0=P 
-PORTB=0x33;
-DDRB=0x3C;
+// State5=1 State4=0 State3=0 State2=0 State1=P State0=P 
+//PORTB=0b100011;
+//DDRB=0x3C;
 
 // Timer/Counter 0 initialization
 // Clock source: System Clock
@@ -157,13 +178,24 @@ while (1)
                 PORTB.2 = 1;
             }        
         }
-                          
+                     
+        //кнопка інтервал     
+        if (1 == PINB.4 && 0 == time_unit)
+        {
+            while(1 == PINB.4) delay_ms(50); //чекаємо поки відпустять кнопку     
+                                           
+            delay_ms(30); //антидребезг
+            
+            //додаємо одну хвилину
+            AddMin();
+    
+        }            
         
         //кнопка стоп
-        if (0 == PINB.0)
+        if (1 == PINB.0)
         {
             Stop();
-            while(0 == PINB.0) delay_ms(50); //чекаємо поки відпустять кнопку         
+            while(1 == PINB.0) delay_ms(50); //чекаємо поки відпустять кнопку         
         }            
         
         //кнопка старт
@@ -174,22 +206,6 @@ while (1)
                 Start();
                 while(0 == PINB.1) delay_ms(50); //чекаємо поки відпустять кнопку            
             }           
-            else
-            {
-                //додаємо одну хвилину
-                Add50utint();
-                
-                while(0 == PINB.1) delay_ms(10); //чекаємо поки відпустять кнопку            
-
-                //помограємо світодіодом - що хвилина додана
-                PORTB.2 = 0;
-                delay_ms(150);
-                PORTB.2 = 1;  
-                delay_ms(150);
-                PORTB.2 = 0;
-                delay_ms(150);
-                PORTB.2 = 1;  
-            }
         }
 
       }

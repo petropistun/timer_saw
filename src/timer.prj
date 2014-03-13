@@ -115,7 +115,7 @@ WarningUnknownPragma=1
 LinkerWarnings=1
 DebugBootLoader=0
 WatchAVR8LAutoVariables=0
-Build=10
+Build=11
 UseEEPROMLocation0=1
 [Assembler]
 OutputFormat=1
@@ -191,14 +191,6 @@ PreserveEEPROM=0
 VerifyProgramming=1
 ProgrammingCounter=0
 RunUserProg=0
-[HeadersList]
-Files=1
-F1=Z:\media\m153\SYSTEM\t309\timer_IV\timer.c
-[Header1]
-Files=3
-F1=C:\cvavreval\inc\tiny13.h
-F2=C:\cvavreval\inc\tiny13_bits.h
-F3=C:\cvavreval\inc\delay.h
 [Bookmarks0]
 Row=0
 Column=0
@@ -226,3 +218,11 @@ BK8=-1
 BK9=-1
 [FoldedCode1]
 Blocks=0
+[HeadersList]
+Files=1
+F1=F:\Project\MicroControler\timer_saw\src\timer.c
+[Header1]
+Files=3
+F1=C:\cvavreval\inc\tiny13.h
+F2=C:\cvavreval\inc\tiny13_bits.h
+F3=C:\cvavreval\inc\delay.h

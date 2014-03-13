@@ -1,12 +1,13 @@
 RAM Allocation
 Variable                                                          Address   Size
 --------------------------------------------------------------------------------
+time_unit                                                         0x0070       4
 
 EEPROM Allocation
 Variable                                                          Address   Size
 --------------------------------------------------------------------------------
+interval                                                          0x0000       1
 
 Register Allocation
 Variable                                                          Register  Size
 --------------------------------------------------------------------------------
-time_unit                                                         R4,R5        2
