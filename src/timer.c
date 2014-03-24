@@ -36,24 +36,25 @@ unsigned long int time_unit = 0; //один юніт - 50 мс
 
 void AddMin()  // 1 min
 {
-    char i = 0;
+    unsigned char i = 0;
     if (interval < MAX_TIME)
-    {            
-        interval += 1;
+    {       
+        i = interval + 1; 
+        interval = i;
     }
     else
     {
-        interval = 0;
+        interval = 1;
     }          
     
     for( i = 0; i < interval; i++)
     {
         PORTB.2 = 1;
-        delay_ms(80);
-        if (1 == PINB.4) break;
+        delay_ms(800);
+        if (0 == PINB.4) break;
         PORTB.2 = 0;
-        delay_ms(120);         
-        if (1 == PINB.4) break;
+        delay_ms(1200);         
+        if (0 == PINB.4) break;
     }               
     
     PORTB.2 = 0;
@@ -180,9 +181,9 @@ while (1)
         //кнопка інтервал     
         if (0 == PINB.4 && 0 == time_unit)
         {
-            while(0 == PINB.4) delay_ms(50); //чекаємо поки відпустять кнопку     
+            while(0 == PINB.4) delay_ms(100); //чекаємо поки відпустять кнопку     
                                            
-            delay_ms(30); //антидребезг
+            delay_ms(300); //антидребезг
             
             //додаємо одну хвилину
             AddMin();
@@ -199,11 +200,8 @@ while (1)
         //кнопка старт
         if (0 == PINB.1)
         {
-            if (0 == time_unit)
-            {
-                Start();
-                while(0 == PINB.1) delay_ms(50); //чекаємо поки відпустять кнопку            
-            }           
+            Start();
+            while(0 == PINB.1) delay_ms(50); //чекаємо поки відпустять кнопку            
         }
 
       }
