@@ -62,16 +62,14 @@ void AddMin()  // 1 min
 void Start()
 {
     time_unit += interval*ONE_MIN_TIME; //одна хвилина
-    PORTB.3 = 0; 
-    PORTB.4 = 1;         
+    PORTB.3 = 1; 
     PORTB.2 = 1;
 }
 
 void Stop()
 {
     time_unit = 0;
-    PORTB.3 = 1; 
-    PORTB.4 = 0;
+    PORTB.3 = 0; 
     PORTB.2 = 0;
 }
 
@@ -180,9 +178,9 @@ while (1)
         }
                      
         //кнопка інтервал     
-        if (1 == PINB.4 && 0 == time_unit)
+        if (0 == PINB.4 && 0 == time_unit)
         {
-            while(1 == PINB.4) delay_ms(50); //чекаємо поки відпустять кнопку     
+            while(0 == PINB.4) delay_ms(50); //чекаємо поки відпустять кнопку     
                                            
             delay_ms(30); //антидребезг
             
