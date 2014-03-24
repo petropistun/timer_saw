@@ -50,10 +50,10 @@ void AddMin()  // 1 min
     for( i = 0; i < interval; i++)
     {
         PORTB.2 = 1;
-        delay_ms(800);
+        delay_ms(1600);
         if (0 == PINB.4) break;
         PORTB.2 = 0;
-        delay_ms(1200);         
+        delay_ms(2400);         
         if (0 == PINB.4) break;
     }               
     
