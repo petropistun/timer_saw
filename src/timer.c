@@ -14,7 +14,7 @@ Comments:
 
 
 Chip type               : ATtiny13
-AVR Core Clock frequency: 1,000000 MHz
+AVR Core Clock frequency: 9,600000 MHz
 Memory model            : Tiny
 External RAM size       : 0
 Data Stack size         : 16
@@ -29,7 +29,7 @@ eeprom unsigned char interval = 0; //у хвилинах
 unsigned long int time_unit = 0; //один юніт - 50 мс
 
 
-#define ONE_MIN_TIME  11700  //одна хв
+#define ONE_MIN_TIME  1170  //одна хв
 
 
 #define MAX_TIME 15  // 15 min
@@ -50,10 +50,10 @@ void AddMin()  // 1 min
     for( i = 0; i < interval; i++)
     {
         PORTB.2 = 1;
-        delay_ms(1600);
+        delay_ms(150);
         if (0 == PINB.4) break;
         PORTB.2 = 0;
-        delay_ms(2400);         
+        delay_ms(300);         
         if (0 == PINB.4) break;
     }               
     
@@ -181,9 +181,11 @@ while (1)
         //кнопка інтервал     
         if (0 == PINB.4 && 0 == time_unit)
         {
-            while(0 == PINB.4) delay_ms(100); //чекаємо поки відпустять кнопку     
+            while(0 == PINB.4) delay_ms(50); //чекаємо поки відпустять кнопку
+            delay_ms(10);     
+            while(0 == PINB.4) delay_ms(50); //чекаємо поки відпустять кнопку
                                            
-            delay_ms(300); //антидребезг
+            delay_ms(50); //антидребезг
             
             //додаємо одну хвилину
             AddMin();
@@ -201,7 +203,10 @@ while (1)
         if (0 == PINB.1)
         {
             Start();
-            while(0 == PINB.1) delay_ms(50); //чекаємо поки відпустять кнопку            
+            while(0 == PINB.1) delay_ms(50); //чекаємо поки відпустять кнопку
+            delay_ms(10);            
+            while(0 == PINB.1) delay_ms(50); //чекаємо поки відпустять кнопку
+            delay_ms(50);
         }
 
       }
