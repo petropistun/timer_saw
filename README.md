@@ -3,8 +3,6 @@ TIMER
 
 Timer for circular saw
 
-
-
 PINS
 -----
 
@@ -19,5 +17,4 @@ pin4 - інтервал
 PORTB.2 - діод
 
 PORTB.3 - релюшка, включається мінусом
-
 
